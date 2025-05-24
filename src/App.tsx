@@ -2,15 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-import Header from './components/Header';
 import PageView from './components/PageView';
+import StatsDisplay, { StatsProvider } from './components/StatsDisplay';
+import { ClearProvider } from './components/ClearContext';
 
 function App() {
   return (
-    <Router>
+    <StatsProvider>
+      <ClearProvider>
+        <Router>
       <div className="min-h-screen bg-gray-100">
-        <Header />
         <Navbar />
+        <StatsDisplay />
         <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Navigate to="/page/1" replace />} />
@@ -19,7 +22,9 @@ function App() {
           </Routes>
         </main>
       </div>
-    </Router>
+      </Router>
+      </ClearProvider>
+    </StatsProvider>
   );
 }
 

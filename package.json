@@ -1,5 +1,5 @@
 {
-  "name": "swiftly_ai",
+  "name": "lecole-list",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
+    "html2canvas": "^1.4.1",
     "postcss-cli": "^11.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
+    "netlify-cli": "^21.5.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3"
   }
