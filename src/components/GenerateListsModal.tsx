@@ -215,7 +215,12 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
     
     // A4 portrait with some margin for better printing
     canvas.width = 800;
-    canvas.height = 1131; // Approximate A4 ratio (1:1.414)
+  
+    // Calculate canvas height based on total entries to ensure everything fits
+    // For larger numbers of entries, make the canvas taller
+    const baseHeight = 1131; // Approximate A4 ratio (1:1.414)
+    const additionalHeight = totalEntries > 50 ? (totalEntries - 50) * 5 : 0;
+    canvas.height = baseHeight + additionalHeight;
     
     // Reset canvas
     ctx.fillStyle = '#ffffff';
@@ -232,7 +237,7 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
     ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
     ctx.shadowBlur = 12;
     ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
+    ctx.shadowOffsetY = 0;
     ctx.fillStyle = '#ffffff';
     const paperMargin = 20;
     ctx.fillRect(paperMargin, paperMargin, canvas.width - paperMargin * 2, canvas.height - paperMargin * 2);
@@ -248,6 +253,10 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
     
     // Count the total number of people being processed
     const totalPeopleCount = inputEntries.length;
+    
+    // Log the number of entries in each activity for debugging
+    console.log('Activity1 entries:', Object.entries(report.activity1).map(([type, entries]) => `${type}: ${entries.length}`));
+    console.log('Activity2 entries:', Object.entries(report.activity2).map(([type, entries]) => `${type}: ${entries.length}`));
     
     // Prepare date string
     const today = new Date();
@@ -320,14 +329,19 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
       if (idx % 2 === 0) {
         ctx.fillStyle = '#f8f9fa';
         const rowY = activityY - 25;
-        const rowHeight = Math.min(
-          maxHeightPerActivity - 10,
-          Math.max(
-            Math.ceil(activity1Entries.length / 2) * lineHeight,
-            Math.ceil(activity2Entries.length / 2) * lineHeight
-          ) + 40
-        );
         
+        // Calculate the actual number of rows needed for each column
+        const activity1Rows = Math.ceil(activity1Entries.length / 2);
+        const activity2Rows = Math.ceil(activity2Entries.length / 2);
+        
+        // Calculate the height based on actual entries plus padding
+        // Don't limit by maxHeightPerActivity to ensure background covers all entries
+        const rowHeight = Math.max(
+          activity1Rows * lineHeight,
+          activity2Rows * lineHeight
+        ) + 40; // Add padding
+        
+        // Draw background rectangles that will expand with content
         ctx.fillRect(activity1X - 10, rowY, columnWidth - 20, rowHeight);
         ctx.fillRect(activity2X - 10, rowY, columnWidth - 20, rowHeight);
       }
@@ -340,10 +354,13 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
       activityY += 30;
       
       // Calculate entry columns (2 columns per activity for better visibility)
+      // Ensure all entries can be displayed by increasing maxEntriesPerInnerCol
       const maxEntriesPerInnerCol = Math.ceil(Math.max(
         activity1Entries.length,
         activity2Entries.length
       ) / 2);
+      
+      // No upper limit on the number of entries per column - will display all entries
       const innerColWidth = (columnWidth - 30) / 2;
       
       // Entry font
@@ -453,7 +470,10 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
       
       // Move to position for next activity type with spacing proportional to content
       const spacing = totalEntries > 30 ? 15 : 25;
-      activityY += Math.min(maxEntriesHeight + spacing, maxHeightPerActivity);
+      
+      // Adjust the vertical space to ensure all entries are visible
+      // Don't limit by maxHeightPerActivity to ensure all entries are shown
+      activityY += maxEntriesHeight + spacing;
     });
     
     // Add unidentified entries at the bottom as a separate full-width block
