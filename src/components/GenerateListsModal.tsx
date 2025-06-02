@@ -318,7 +318,7 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
     
     // Estimate max height per activity
     const availableHeight = contentHeight - 70; // After titles
-    const maxHeightPerActivity = Math.floor(availableHeight / activityTypes.length);
+    // Calculate height dynamically based on content
     
     // Draw each activity type
     activityTypes.forEach((type, idx) => {

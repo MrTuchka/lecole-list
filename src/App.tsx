@@ -5,7 +5,6 @@ import Navbar from './components/Navbar';
 import PageView from './components/PageView';
 import StatsDisplay, { StatsProvider } from './components/StatsDisplay';
 import { ClearProvider } from './components/ClearContext';
-import AIAgent from './components/AIAgent';
 import AIAgentPage from './components/AIAgentPage';
 
 function App() {
