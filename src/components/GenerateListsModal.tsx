@@ -267,7 +267,6 @@ const GenerateListsModal: React.FC<GenerateListsModalProps> = ({ onClose }) => {
     });
     
     const contentY = 130; // Start after header
-    const contentHeight = canvas.height - contentY - padding;
     
     // Calculate available space and adjust font sizes if needed
     const activityTypes = ['KF', 'Media', 'SportEX', 'SportIN'];
