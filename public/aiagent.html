@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Assistant</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+    }
+    elevenlabs-convai {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <elevenlabs-convai agent-id="agent_01jws2vrq7et6rsg8ax6qjbk48"></elevenlabs-convai>
+  </div>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+  <script>
+    // Simple Telegram ID check
+    document.addEventListener('DOMContentLoaded', function() {
+      // Try to get Telegram WebApp data
+      if (window.Telegram && window.Telegram.WebApp) {
+        const webAppUser = window.Telegram.WebApp.initDataUnsafe?.user;
+        if (!webAppUser || webAppUser.id.toString() !== '178875921') {
+          document.body.innerHTML = '<div style="text-align: center; padding: 20px;">Unauthorized access</div>';
+        }
+      } else {
+        // For development testing
+        const urlParams = new URLSearchParams(window.location.search);
+        const telegramId = urlParams.get('telegramId');
+        if (telegramId !== '178875921' && location.hostname !== 'localhost') {
+          document.body.innerHTML = '<div style="text-align: center; padding: 20px;">Unauthorized access</div>';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
